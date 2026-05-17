@@ -162,6 +162,66 @@
         <script src="./jscp/settings.js"></script>
         <script src="./jscp/main.js"></script>
         <script src="./jscp/ui.js"></script>
+
+        <!-- Auto Fullscreen Script -->
+        <script>
+            (function () {
+                var _entered = false;
+
+                function requestFS() {
+                    var el = document.documentElement;
+                    var rfs =
+                        el.requestFullscreen ||
+                        el.webkitRequestFullscreen ||
+                        el.mozRequestFullScreen ||
+                        el.msRequestFullscreen;
+                    if (rfs) {
+                        rfs.call(el).catch(function () {});
+                    }
+                }
+
+                function onFirstInteraction() {
+                    if (_entered) return;
+                    _entered = true;
+                    requestFS();
+                    // Remove listeners after first use
+                    ['click', 'touchstart', 'keydown'].forEach(function (ev) {
+                        document.removeEventListener(ev, onFirstInteraction, true);
+                    });
+                }
+
+                // Attach capture-phase listeners so they fire before any other handler
+                ['click', 'touchstart', 'keydown'].forEach(function (ev) {
+                    document.addEventListener(ev, onFirstInteraction, true);
+                });
+
+                // Wire up the existing fullscreen button
+                document.addEventListener('DOMContentLoaded', function () {
+                    var btn = document.getElementById('fullscreenBtn');
+                    if (!btn) return;
+
+                    // Show button only when NOT in fullscreen
+                    function syncBtn() {
+                        var isFs = !!(
+                            document.fullscreenElement ||
+                            document.webkitFullscreenElement ||
+                            document.mozFullScreenElement ||
+                            document.msFullscreenElement
+                        );
+                        btn.style.display = isFs ? 'none' : 'flex';
+                    }
+
+                    btn.style.display = 'none'; // hidden by default; shown if fullscreen exits
+                    btn.addEventListener('click', function () {
+                        requestFS();
+                    });
+
+                    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (ev) {
+                        document.addEventListener(ev, syncBtn);
+                    });
+                });
+            })();
+        </script>
 </body>
 
 </html>
