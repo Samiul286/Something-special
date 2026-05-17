@@ -154,20 +154,19 @@
             </div>
         </div>
 
-        <!-- Fullscreen button for Android with arrow guide -->
-        <div id="fullscreenGuide" style="display: none;">
-            <!-- Arrow system pointing to button -->
-            <div class="fs-arrow-system">
-                <div class="fs-arrow-label">👆 Tap here for best experience!</div>
-                <div class="fs-arrows">
-                    <span class="fs-arrow">⬇</span>
-                    <span class="fs-arrow fs-arrow-2">⬇</span>
-                    <span class="fs-arrow fs-arrow-3">⬇</span>
-                </div>
+        <!-- Fullscreen hint arrows -->
+        <div id="fullscreenHint" style="display: none;">
+            <div class="fs-hint-label">Tap to Fullscreen!</div>
+            <div class="fs-hint-arrows">
+                <span class="fs-arrow">↓</span>
+                <span class="fs-arrow">↓</span>
+                <span class="fs-arrow">↓</span>
             </div>
         </div>
-        <button id="fullscreenBtn" class="fs-btn-glow" style="position: fixed; bottom: 20px; right: 20px; z-index: 990010; padding: 12px 20px; border-radius: 12px; border: 2px solid rgba(255,105,180,0.6); background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; font-size: 16px; cursor: pointer; display: none;">
-            <img style="width: 22px; height: 22px; vertical-align: middle;" src="./image/full.png" alt="Fullscreen">
+
+        <!-- Fullscreen button for Android -->
+        <button id="fullscreenBtn" style="display: none;">
+            <img style="width: 20px; height: 20px; vertical-align: middle;" src="./image/full.png" alt="Fullscreen">
         </button>
         <script src="./lang.js"></script>
         <script src="./jscp/settings.js"></script>

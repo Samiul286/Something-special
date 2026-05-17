@@ -1446,19 +1446,31 @@ applySettingsButton.addEventListener('click', () => {
     }
 });
 
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+function isAndroid() {
+    return /android/i.test(navigator.userAgent);
 }
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const fullscreenHint = document.getElementById('fullscreenHint');
 
 function updateFullscreenBtnVisibility() {
-    if (!fullscreenBtn) return;
-    if (isMobileDevice()) {
-        // Always show on mobile — let user re-enter fullscreen anytime
+    if (
+        fullscreenBtn &&
+        isAndroid() &&
+        !document.fullscreenElement
+    ) {
         fullscreenBtn.style.display = 'block';
-        if (fullscreenGuide) fullscreenGuide.style.display = 'flex';
-    } else {
+        if (fullscreenHint) fullscreenHint.style.display = 'flex';
+
+        // Ẩn nút sau 3 giây nếu chưa bấm
+        if (fullscreenBtn.hideTimeout) clearTimeout(fullscreenBtn.hideTimeout);
+        fullscreenBtn.hideTimeout = setTimeout(() => {
+            fullscreenBtn.style.display = 'none';
+            if (fullscreenHint) fullscreenHint.style.display = 'none';
+        }, 2500);
+    } else if (fullscreenBtn) {
         fullscreenBtn.style.display = 'none';
-        if (fullscreenGuide) fullscreenGuide.style.display = 'none';
+        if (fullscreenHint) fullscreenHint.style.display = 'none';
+        if (fullscreenBtn.hideTimeout) clearTimeout(fullscreenBtn.hideTimeout);
     }
 }
 
@@ -1466,29 +1478,25 @@ updateFullscreenBtnVisibility();
 
 fullscreenBtn.onclick = function () {
     const elem = document.documentElement;
-    if (document.fullscreenElement) {
-        // Currently fullscreen — exit it
-        document.exitFullscreen && document.exitFullscreen();
-    } else {
-        // Enter fullscreen
-        if (elem.requestFullscreen) {
+    if (elem.requestFullscreen) {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
             elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) {
-            elem.webkitRequestFullscreen(); // Safari/iOS
-        } else if (elem.mozRequestFullScreen) {
-            elem.mozRequestFullScreen(); // Firefox
-        } else if (elem.msRequestFullscreen) {
-            elem.msRequestFullscreen(); // IE/Edge
         }
+    } else {
+        alert(t('fullscreenNotSupported'));
     }
-    // Do NOT hide the button — keep it visible so user can always interact
+    // Ẩn nút ngay khi bấm
+    fullscreenBtn.style.display = 'none';
+    if (fullscreenHint) fullscreenHint.style.display = 'none';
+    if (fullscreenBtn.hideTimeout) clearTimeout(fullscreenBtn.hideTimeout);
 };
 
-// Re-show button whenever fullscreen state changes (exit, etc.)
-document.addEventListener('fullscreenchange', updateFullscreenBtnVisibility);
-document.addEventListener('webkitfullscreenchange', updateFullscreenBtnVisibility);
-document.addEventListener('mozfullscreenchange', updateFullscreenBtnVisibility);
-document.addEventListener('MSFullscreenChange', updateFullscreenBtnVisibility);
+// Ẩn nút nếu user chuyển sang fullscreen bằng cách khác
+document.addEventListener('fullscreenchange', function () {
+    updateFullscreenBtnVisibility();
+});
 function isLandscapeMode() {
     return window.innerWidth > window.innerHeight;
 }
