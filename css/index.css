@@ -1687,4 +1687,143 @@
       font-weight: 600;
   }
 
- 
+  /* ═══════════════════════════════════════
+     FULLSCREEN BUTTON — Glow & Arrow Guide
+     ═══════════════════════════════════════ */
+
+  /* Glowing fullscreen button */
+  .fs-btn-glow {
+      box-shadow:
+          0 0 15px rgba(255, 105, 180, 0.6),
+          0 0 30px rgba(255, 105, 180, 0.4),
+          0 0 60px rgba(255, 105, 180, 0.2),
+          inset 0 0 15px rgba(255, 105, 180, 0.1) !important;
+      animation: fsGlowPulse 1.5s ease-in-out infinite !important;
+      transition: all 0.3s ease !important;
+  }
+
+  .fs-btn-glow:active {
+      transform: scale(0.95) !important;
+  }
+
+  @keyframes fsGlowPulse {
+      0%, 100% {
+          box-shadow:
+              0 0 15px rgba(255, 105, 180, 0.6),
+              0 0 30px rgba(255, 105, 180, 0.4),
+              0 0 60px rgba(255, 105, 180, 0.2),
+              inset 0 0 15px rgba(255, 105, 180, 0.1);
+          border-color: rgba(255, 105, 180, 0.6);
+      }
+      50% {
+          box-shadow:
+              0 0 20px rgba(255, 105, 180, 0.9),
+              0 0 45px rgba(255, 105, 180, 0.6),
+              0 0 80px rgba(255, 105, 180, 0.3),
+              inset 0 0 20px rgba(255, 105, 180, 0.15);
+          border-color: rgba(255, 105, 180, 1);
+      }
+  }
+
+  /* Arrow guide system */
+  #fullscreenGuide {
+      position: fixed;
+      bottom: 65px;
+      right: 10px;
+      z-index: 990011;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      animation: fsFadeIn 0.5s ease-out forwards;
+  }
+
+  @keyframes fsFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fs-arrow-system {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+  }
+
+  /* Label text */
+  .fs-arrow-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffb3cc;
+      text-shadow:
+          0 0 10px rgba(255, 105, 180, 0.8),
+          0 0 20px rgba(255, 105, 180, 0.5),
+          0 1px 4px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+      animation: fsLabelGlow 2s ease-in-out infinite;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+  }
+
+  @keyframes fsLabelGlow {
+      0%, 100% {
+          text-shadow:
+              0 0 10px rgba(255, 105, 180, 0.8),
+              0 0 20px rgba(255, 105, 180, 0.5),
+              0 1px 4px rgba(0, 0, 0, 0.7);
+      }
+      50% {
+          text-shadow:
+              0 0 15px rgba(255, 105, 180, 1),
+              0 0 30px rgba(255, 105, 180, 0.7),
+              0 0 45px rgba(255, 105, 180, 0.4),
+              0 1px 4px rgba(0, 0, 0, 0.7);
+      }
+  }
+
+  /* Arrow container */
+  .fs-arrows {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin-top: 2px;
+  }
+
+  /* Individual arrows */
+  .fs-arrow {
+      font-size: 18px;
+      line-height: 1;
+      color: #ff69b4;
+      text-shadow: 0 0 12px rgba(255, 105, 180, 0.9);
+      animation: fsBounceArrow 1.2s ease-in-out infinite;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 6px rgba(255, 105, 180, 0.8));
+  }
+
+  .fs-arrow-2 {
+      animation-delay: 0.15s;
+      opacity: 0.7;
+      font-size: 16px;
+  }
+
+  .fs-arrow-3 {
+      animation-delay: 0.3s;
+      opacity: 0.5;
+      font-size: 14px;
+  }
+
+  @keyframes fsBounceArrow {
+      0%, 100% {
+          transform: translateY(0);
+          opacity: 0.5;
+      }
+      50% {
+          transform: translateY(6px);
+          opacity: 1;
+      }
+  }
